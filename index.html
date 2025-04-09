@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACACIA JOHNSON</title>
+</head>
+<body>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <body style="background-color: #d1cfb8;">
+    <h1 style="text-align: center;"><em><strong>Acacia Johnson</strong></em></h1>
+    <p>&nbsp;</p>
+    <p style="text-align: center;"><img src="images/musashi-water.jpg" alt="musashi"></p>
+    <p style="text-align: left;">&nbsp;</p>
+    <p style="text-align: center;" id="time"></p> <!-- Added an id here for the time display -->
+    <p style="text-align: center;">
+        <a href="about.html">About</a> // 
+        <a href="projects/">projects</a> // 
+        <a href="blog/">blog</a> // 
+        <a href="docs/resume.pdf">resume</a> // 
+        <a href="contact.html">contact</a>
+    </p>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            };
+            const timeString = now.toLocaleTimeString('en-US', options);
+            document.getElementById('time').textContent = `TIME IN DALLAS: ${timeString} CST`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime(); // initial call to display time immediately
+    </script>
+</body>
+</html>
