@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acacia Johnson's Personal Website</title>
+</head>
+<body>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <h1 style="text-align: center;">&nbsp;</h1>
+    <h1 style="text-align: center;"><em><strong>Acacia Johnson</strong></em></h1>
+    <p>&nbsp;</p>
+    <p style="text-align: center;"><img src="http://www.pixelstalk.net/wp-content/uploads/2016/10/Wallpapers-HD-Forest.jpg" alt="" width="620" height="349" /></p>
+    <p style="text-align: left;">&nbsp;</p>
+    <p style="text-align: center;" id="time"></p> <!-- Added an id here for the time display -->
+    <p style="text-align: center;">
+        <a href="https://www.arjohnson.com/about">about</a> // 
+        <a href="https://www.arjohnson.com/projects">projects</a> // 
+        <a href="https://www.arjohnson.com/blog">blog</a> // 
+        <a href="https://www.arjohnson.com/resume">resume</a> // 
+        <a href="https://www.arjohnson.com/contact">contact</a>
+    </p>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+            };
+            const timeString = now.toLocaleTimeString('en-US', options);
+            document.getElementById('time').textContent = `TIME IN DALLAS: ${timeString} CST`;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime(); // initial call to display time immediately
+    </script>
+</body>
+</html>
