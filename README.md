@@ -1,2 +1,2 @@
-# arjohnson-website
+# personal-website
 my personal website
