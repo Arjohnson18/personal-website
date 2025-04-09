@@ -9,9 +9,9 @@
     <h1 style="text-align: center;">&nbsp;</h1>
     <h1 style="text-align: center;">&nbsp;</h1>
     <body style="background-color: #d1cfb8;">
-    <h1 style="text-align: center;"><em><strong>Acacia Johnson</strong></em></h1>
+    <h1 style="text-align: center;"><em><strong>ACACIA JOHNSON</strong></em></h1>
     <p>&nbsp;</p>
-    <p style="text-align: center;"><img src="images/musashi-water.jpg" alt="musashi" width="300"></p>
+    <p style="text-align: center;"><img src="images/musashi-water.jpg" alt="musashi" width="500"></p>
     <p style="text-align: left;">&nbsp;</p>
     <p style="text-align: center;" id="time"></p> <!-- Added an id here for the time display -->
     <p style="text-align: center;">
@@ -19,24 +19,25 @@
         <a href="projects/">projects</a> // 
         <a href="blog/">blog</a> // 
         <a href="docs/AcaciaJohnsonResume1.pdf">resume</a> // 
-        <a href="contact.html">contact</a>
+        <a href="python scripts/">scripts</a>
     </p>
 
     <script>
         function updateTime() {
             const now = new Date();
             const options = {
+                timeZone: 'America/Chicago',
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
-                hour12: false,
+                hour12: true,
             };
             const timeString = now.toLocaleTimeString('en-US', options);
             document.getElementById('time').textContent = `TIME IN DALLAS: ${timeString} CST`;
         }
-
+    
         setInterval(updateTime, 1000);
-        updateTime(); // initial call to display time immediately
-    </script>
+        updateTime(); // initial call
+    </script>    
 </body>
 </html>
