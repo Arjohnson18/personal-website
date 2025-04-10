@@ -1,34 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-    <h2 style="text-align: center;">Who Am I?</h2>
-    <body style="background-color: #d1cfb8;">
-    <p style="text-align: left;">
-        Yo, I'm <strong>Acacia Johnson</strong>. I am a current graduate student pursuing a MS in Management with a Concentration in Business Analytics. I have
-        a strong analytical mindset and effective management skills. I would love te oppurtunity to apply and expand expertise in finance,
-        business analytics, and project management to make meaningful contributions in a dynamic corporate environment.
-    </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Am I?</title>
+    <style>
+        /* Ensures the page layout is neat */
+        body {
+            background-color: #d1cfb8;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
 
-    <p style="text-align: left;">
-        When I'm not coding or working on data projects, you can find me playing the piano or trombone, listening to jazz, or playing
-        some video games. I’m obsessed with Formula 1 and MotoGP (any motorsport really) and anything that improves
-        who I am as a person.
-    </p>
-    
-    <p style="text-align: left;">
-        Some of my current projects involve building a self-hosted storage system for Pokémon save files, fiddling in Linux,
-        and exploring digital minimalism. Always down to connect with like-minded people.
-    </p>
+        /* Title centered in the middle of the page */
+        h2 {
+            text-align: center;
+        }
 
-    <video width="500" autoplay muted loop style="display: block; margin-left: auto; margin-right: auto;">
-        <source src="images/ending.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-    
-    <p style="text-align: center;">
+        /* Flex container for content to align text and video side by side */
+        .content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 80%;
+            max-width: 1200px;
+        }
+
+        /* Left section - text content */
+        .text {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Right section - video */
+        .video {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%; /* Adjust video to fit container */
+            max-width: 500px;
+        }
+
+        /* Footer links centered */
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            margin: 0 15px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Who Am I?</h2>
+
+    <div class="content">
+        <!-- Left Section: Text Content -->
+        <div class="text">
+            <p>
+                Yo, I'm <strong>Acacia Johnson</strong>. I am a current graduate student pursuing a MS in Management with a Concentration in Business Analytics. I have a strong analytical mindset and effective management skills. I would love the opportunity to apply and expand my expertise in finance, business analytics, and project management to make meaningful contributions in a dynamic corporate environment.
+            </p>
+
+            <p>
+                When I'm not coding or working on data projects, you can find me playing the piano or trombone, listening to jazz, or playing some video games. I’m obsessed with Formula 1 and MotoGP (any motorsport really) and anything that improves who I am as a person.
+            </p>
+            
+            <p>
+                Some of my current projects involve building a self-hosted storage system for Pokémon save files, fiddling in Linux, and exploring digital minimalism. Always down to connect with like-minded people.
+            </p>
+        </div>
+
+        <!-- Right Section: Video -->
+        <div class="video">
+            <video autoplay muted loop>
+                <source src="images/ending.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
         <a href="about.html">about</a> // 
         <a href="projects/">projects</a> // 
         <a href="blog/">blog</a> // 
         <a href="docs/AcaciaJohnsonResume1.pdf">resume</a> // 
         <a href="python scripts/">scripts</a>
-    </p>
+    </div>
 
+</body>
+</html>
