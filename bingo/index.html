@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>bingo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #162138;
+      color: #ffffff;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .bingo-cell {
+      background: #304212;
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 120px;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.3s;
+    }
+
+    .bingo-cell:hover {
+      background: #3e5523;
+    }
+
+    .marked {
+      background: #af5125 !important;
+    }
+
+    .free-space {
+      background: #2b4c76;
+      font-weight: bold;
+      cursor: default;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 16px;
+      border: none;
+      background: #dfaf2b;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #b99124;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+      .bingo-cell {
+        color: black;
+        background: #eee !important;
+        border: 1px solid #999;
+      }
+      .marked {
+        background: #ccc !important;
+      }
+      button, .button-group {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Motorsport Bingo Generator</h1>
+  <div class="bingo-grid" id="bingoGrid"></div>
+  <div class="button-group">
+    <button onclick="generateBingo()">Create A New Card</button>
+    <button onclick="window.print()">Print Card</button>
+  </div>
+
+  <script>
+    const prompts = [
+      ["Blank outqualifies Blank", "Blank outqualifies Blank by 3 tenths"],
+      ["Blank makes Q3", "Blank does not make Q3"],
+      ["Red flag in qualifying", "Red flag in race"],
+      ["Blank makes Q2", "Blank does not make Q2"],
+      ["Blank qualifies top 5", "Blank qualifies 15th or higher"],
+      "Multiple times deleted in qualifying for track limits",
+      "4 or more rookies make Q2",
+      "Qualifying is held in wet conditions",
+      "Qualifying ends early",
+      "Virtual Safety Car / Safety Car / Red Flag",
+      "Incident at Turn BLANK",
+      "Crash on Saturday/Sunday",
+      "First lap contact/crash",
+      "Someone gets a puncture",
+      "2+ DNFs",
+      "3+ grid/time penalties",
+      "10+ second pitstop",
+      "Rain affects at least one session",
+      "A session ends early",
+      ["Blank on podium", "Blank is not on the podium"],
+      "Both Blank on podium",
+      "Same team incident/crash",
+      "Blank finishes before Blank",
+      ["A rookie crashes", "A veteran crashes"],
+      "Blank in points",
+      "Blank finishes last",
+      "Blank has fastest lap",
+      "Blank scores double points",
+      "Blank on pole",
+      ["Blank loses places on opening lap", "Blank gains places on opening lap"],
+      "2 or more rookies score points",
+      "A new lap record is set",
+      "3+ lap leaders",
+      "5+ cars are lapped",
+      "6+ teams in the points",
+      ["Polesitter does not win", "Polesitter wins"],
+      ["Polesitter loses lead in first 5 laps", "Polesitter keeps lead in first 5 laps"],
+      ["WDC leader changes", "WCC leader changes"],
+      ["Sprint winner does not win the race", "Sprint winner does win the race"],
+      ["Driver gets fined for swearing", "Blank does not get damaged the entire weekend"]
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function generateBingo() {
+      const grid = document.getElementById("bingoGrid");
+      grid.innerHTML = "";
+
+      const shuffled = shuffle([...prompts]);
+      const selected = shuffled.slice(0, 24); // 24 + 1 Free Space = 25
+
+      for (let i = 0; i < 25; i++) {
+        const cell = document.createElement("div");
+        cell.className = "bingo-cell";
+
+        if (i === 12) {
+          cell.innerText = "It's lights out, and away we go!";
+          cell.classList.add("free-space", "marked");
+        } else {
+          const prompt = selected[i < 12 ? i : i - 1];
+          const text = Array.isArray(prompt)
+            ? prompt[Math.floor(Math.random() * prompt.length)]
+            : prompt;
+          cell.innerText = text;
+          cell.addEventListener("click", () => {
+            cell.classList.toggle("marked");
+          });
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+    window.onload = generateBingo;
+  </script>
+</body>
+</html>
