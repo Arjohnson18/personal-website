@@ -1,102 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Who Am I?</title>
-    <style>
-        /* Ensures the page layout is neat */
-        body {
-            background-color: #d1cfb8;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Who Am I?</title>
+  <style>
+    :root {
+      --bg: #162138;
+      --text: #ffffff;
+      --link: #ffffff;
+    }
 
-        /* Title centered in the middle of the page */
-        h2 {
-            text-align: center;
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 2rem 1rem;
+    }
 
-        /* Flex container for content to align text and video side by side */
-        .content {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 80%;
-            max-width: 1200px;
-        }
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
 
-        /* Left section - text content */
-        .text {
-            flex: 1;
-            padding: 20px;
-        }
+    .content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 1200px;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
 
-        /* Right section - video */
-        .video {
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-            padding: 20px;
-        }
+    .text,
+    .video {
+      flex: 1 1 300px;
+      padding: 1rem;
+    }
 
-        video {
-            width: 100%; /* Adjust video to fit container */
-            max-width: 500px;
-        }
+    .text p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
 
-        /* Footer links centered */
-        .footer-links {
-            text-align: center;
-            margin-top: 20px;
-        }
+    video {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    }
 
-    </style>
+    .footer-links {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .footer-links a {
+      color: var(--link);
+      text-decoration: none;
+      margin: 0 0.4rem;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Optional: Make video square-ish on small screens */
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .text,
+      .video {
+        text-align: center;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <p></p>
-    <p></p>
-    <h2>Who Am I?</h2>
-    <p></p>
-    <p></p>
-    <div class="content">
-        <!-- Left Section: Text Content -->
-        <div class="text">
-            <p>
-                Yo, I'm <strong>Acacia Johnson</strong>. I am a current graduate student pursuing a MS in Management with a Concentration in Business Analytics. I have a strong analytical mindset and effective management skills. I would love the opportunity to apply and expand my expertise in finance, business analytics, and project management to make meaningful contributions in a dynamic corporate environment.
-            </p>
+  <h2>Who Am I?</h2>
 
-            <p>
-                When I'm not coding or working on data projects, you can find me playing the piano or trombone, listening to jazz, or playing some video games. I’m obsessed with Formula 1 and MotoGP (any motorsport really) and anything that improves who I am as a person.
-            </p>
-            
-            <p>
-                Some of my current projects involve building a self-hosted storage system for Pokémon save files, fiddling in Linux, and exploring digital minimalism. Always down to connect with like-minded people.
-            </p>
-        </div>
+  <div class="content">
+    <!-- Left Section: Text Content -->
+    <div class="text">
+      <p>
+        Hi, I'm a graduate student pursuing an <strong>MS in Management with a Business Analytics</strong> concentration. I have a strong analytical mindset and effective management skills. I would love the opportunity to apply and expand my expertise in finance, business analytics, and project management to make meaningful contributions in a dynamic corporate environment. 
+      </p>
 
-        <!-- Right Section: Video -->
-        <div class="video">
-            <video autoplay muted loop>
-                <source src="images/ending.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
+      <p>
+        When I'm not coding or working on data projects, you can find me playing the piano or trombone, listening to jazz, or playing some video games. I’m obsessed with Formula 1 and MotoGP (any motorsport really) and anything that improves who I am as a person. 
+      </p>
+
+      <p>
+        Some of my current projects involve building a self-hosted storage system for Pokémon save files, fiddling in Linux, and exploring digital minimalism. Let’s connect if you’re into any of that.
+      </p>
     </div>
 
-    <!-- Footer Links -->
-    <div class="footer-links">
-        <a href="index.html">home</a> // 
-        <a href="projects/">projects</a> // 
-        <a href="blog/">blog</a> // 
-        <a href="docs/AcaciaJohnsonResume1.pdf">resume</a> // 
-        <a href="python scripts/">scripts</a>
+    <!-- Right Section: Video -->
+    <div class="video">
+      <video autoplay muted loop playsinline>
+        <source src="images/ending.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
+  </div>
+
+  <!-- Footer Links -->
+  <div class="footer-links">
+    <a href="index.html">home</a> //
+    <a href="projects.html">projects</a> //
+    <a href="blog/">blog</a> //
+    <a href="docs/AcaciaJohnsonResume1.pdf">resume</a> //
+    <a href="python scripts/">scripts</a>
+  </div>
 
 </body>
+
 </html>
