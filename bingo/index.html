@@ -3,79 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>bingo</title>
+  <title>F1 Bingo</title>
   <style>
+    :root {
+      --red: #e10600;
+      --black: #121212;
+      --gray: #c5c5c5;
+      --white: #ffffff;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #162138;
-      color: #ffffff;
-      text-align: center;
+      font-family: 'Arial', sans-serif;
+      background-color: var(--gray);
+      margin: 0;
       padding: 2rem;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #181818;
+      color: var(--white);
     }
 
     h1 {
+      color: var(--red);
+      text-align: center;
       margin-bottom: 1rem;
     }
 
-    .bingo-grid {
+    #darkToggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      background-color: var(--black);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    #bingoGrid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      max-width: 900px;
-      margin: 0 auto;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
     }
 
     .bingo-cell {
-      background: #304212;
-      border: 1px solid #ccc;
-      padding: 10px;
-      height: 120px;
-      overflow-y: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      border-radius: 6px;
+      background-color: white;
+      border: 2px solid var(--black);
+      padding: 1rem;
       text-align: center;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
       user-select: none;
-      transition: background 0.3s;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     .bingo-cell:hover {
-      background: #3e5523;
+      background-color: #ffe5e5;
     }
 
     .marked {
-      background: #af5125 !important;
+      background-color: var(--red);
+      color: white;
+      border-color: #900;
     }
 
     .free-space {
-      background: #2b4c76;
-      font-weight: bold;
-      cursor: default;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      padding: 0.5rem 1.5rem;
-      font-size: 16px;
-      border: none;
-      background: #dfaf2b;
+      background-color: var(--black);
       color: white;
-      border-radius: 4px;
-      cursor: pointer;
+      font-style: italic;
     }
+    
 
-    button:hover {
-      background: #b99124;
-    }
-
-    .button-group {
+    .buttons {
       display: flex;
-      justify-content: center;
       gap: 1rem;
-      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .buttons button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: var(--black);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .buttons button:hover {
+      background-color: var(--red);
+    }
+
+    body.dark .bingo-cell {
+      background-color: #222;
+      color: var(--white);
+      border-color: #444;
+    }
+    body.dark .bingo-cell.marked {
+       background-color: #b00000; /* a darker red for better contrast */
+      color: #fff;
+      border-color: #ff4d4d;
+    }
+
+    body.dark .bingo-cell:hover {
+      background-color: #333;
+    }
+
+    body.dark .free-space {
+      background-color: var(--red);
     }
 
     @media print {
@@ -83,86 +134,143 @@
         background: white;
         color: black;
       }
+
       .bingo-cell {
-        color: black;
-        background: #eee !important;
-        border: 1px solid #999;
+        border: 1px solid #000;
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
-      .marked {
-        background: #ccc !important;
+
+      .free-space {
+        font-weight: bold;
       }
-      button, .button-group {
-        display: none;
+
+      #darkToggle,
+      .buttons {
+        display: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <h1>Motorsport Bingo Generator</h1>
-  <div class="bingo-grid" id="bingoGrid"></div>
-  <div class="button-group">
-    <button onclick="generateBingo()">Create A New Card</button>
-    <button onclick="window.print()">Print Card</button>
+  <button id="darkToggle">🌙 Dark Mode</button>
+  <h1>F1 Race Bingo</h1>
+
+  <div class="buttons">
+    <button onclick="generateBingo()">🔄 Generate</button>
+    <button onclick="print()">🖨️ Download PDF</button>
   </div>
 
+  <div id="bingoGrid"></div>
+
   <script>
+    const drivers = [
+      "Norris", "Piastri", "Verstappen", "Tsunoda", "Leclerc", "Hamilton", "Russell", 
+      "Antonelli", "Stroll", "Alonso", "Albon", "Sainz", "Gasly", "Doohan", "Hulkenberg",
+      "Bortoleto", "Lawson", "Hadjar", "Bearman", "Ocon"
+    ];
+
+    const teams = [
+      "McLaren", "Red Bull", "Ferrari", "Mercedes", "Aston Martin",
+      "Williams", "Alpine", "Kick Sauber", "Racing Bulls", "Haas"
+    ];
+
     const prompts = [
-      ["Blank outqualifies Blank", "Blank outqualifies Blank by 3 tenths"],
-      ["Blank makes Q3", "Blank does not make Q3"],
+      ["Driver outqualifies Driver", "Driver outqualifies Driver by 3 tenths"],
+      ["Driver makes Q3", "Driver does not make Q3"],
       ["Red flag in qualifying", "Red flag in race"],
-      ["Blank makes Q2", "Blank does not make Q2"],
-      ["Blank qualifies top 5", "Blank qualifies 15th or higher"],
-      "Multiple times deleted in qualifying for track limits",
+      ["Driver makes Q2", "Driver does not make Q2"],
+      ["Driver qualifies top 5", "Driver qualifies 15th or higher"],
       "4 or more rookies make Q2",
-      "Qualifying is held in wet conditions",
-      "Qualifying ends early",
-      "Virtual Safety Car / Safety Car / Red Flag",
-      "Incident at Turn BLANK",
-      "Crash on Saturday/Sunday",
+      "Qualifying result changes due to penalty",
+      "Unsafe release fine",
+      "Safety car deployed",
+      "Virtual safety car",
+      "Incident at Turn 1",
+      ["Crash on Saturday", "Crash on Sunday"],
       "First lap contact/crash",
       "Someone gets a puncture",
-      "2+ DNFs",
+      "Winning strategy is a 2-stop",
+      "3+ DNFs",
       "3+ grid/time penalties",
-      "10+ second pitstop",
+      ["Pitstop in first 3 laps", "Pitstop in first 5 laps"],
       "Rain affects at least one session",
       "A session ends early",
-      ["Blank on podium", "Blank is not on the podium"],
-      "Both Blank on podium",
+      ["Driver on podium", "Driver is not on the podium"],
+      "Both Team on podium",
+      "Team pit stop over 2.5s",
+      "James Vowles gives an interview during the race",
       "Same team incident/crash",
-      "Blank finishes before Blank",
+      "Driver finishes before Driver",
       ["A rookie crashes", "A veteran crashes"],
-      "Blank in points",
-      "Blank finishes last",
-      "Blank has fastest lap",
-      "Blank scores double points",
-      "Blank on pole",
-      ["Blank loses places on opening lap", "Blank gains places on opening lap"],
+      "Driver in points",
+      "A Team finishes last",
+      ["Team has fastest lap", "Driver on pole"],
+      "Team scores double points",
+      ["Driver loses places on opening lap", "Driver gains places on opening lap"],
       "2 or more rookies score points",
       "A new lap record is set",
       "3+ lap leaders",
+      "A team principal looks mad on camera",
+      "Both Team qualify within 0.300s",
+      "2/3 of the grid starts on mediums",
       "5+ cars are lapped",
+      "Celebrity spotted in the garage",
+      "Commentary team argues on air",
+      "Driver has a radio message in native language",
       "6+ teams in the points",
       ["Polesitter does not win", "Polesitter wins"],
       ["Polesitter loses lead in first 5 laps", "Polesitter keeps lead in first 5 laps"],
       ["WDC leader changes", "WCC leader changes"],
       ["Sprint winner does not win the race", "Sprint winner does win the race"],
-      ["Driver gets fined for swearing", "Blank does not get damaged the entire weekend"]
+      ["A driver gets fined for swearing", "Driver does not get damaged the entire weekend"]
     ];
 
     function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function getRandom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function getRandomAndRemove(array) {
+      if (array.length === 0) return null;
+      const index = Math.floor(Math.random() * array.length);
+      return array.splice(index, 1)[0];
+    }
+
+    function replaceAll(str, search, replacements) {
+      let i = 0;
+      return str.replace(new RegExp(search, "g"), () => replacements[i++] || search);
+    }
+
+    function replacePromptPlaceholders(prompt, availableDrivers, availableTeams) {
+      let newPrompt = Array.isArray(prompt) ? getRandom(prompt) : prompt;
+
+      const driverCount = (newPrompt.match(/Driver/g) || []).length;
+      const teamCount = (newPrompt.match(/Team/g) || []).length;
+
+      const dReps = Array.from({length: driverCount}, () => getRandomAndRemove(availableDrivers) || getRandom(drivers));
+      const tReps = Array.from({length: teamCount}, () => getRandomAndRemove(availableTeams) || getRandom(teams));
+
+      newPrompt = replaceAll(newPrompt, "Driver", dReps);
+      newPrompt = replaceAll(newPrompt, "Team", tReps);
+
+      return newPrompt;
     }
 
     function generateBingo() {
       const grid = document.getElementById("bingoGrid");
       grid.innerHTML = "";
 
-      const shuffled = shuffle([...prompts]);
-      const selected = shuffled.slice(0, 24); // 24 + 1 Free Space = 25
+      const shuffledPrompts = shuffle([...prompts]);
+      const selected = shuffledPrompts.slice(0, 24);
+
+      let availableDrivers = [...drivers];
+      let availableTeams = [...teams];
 
       for (let i = 0; i < 25; i++) {
         const cell = document.createElement("div");
@@ -172,11 +280,9 @@
           cell.innerText = "It's lights out, and away we go!";
           cell.classList.add("free-space", "marked");
         } else {
-          const prompt = selected[i < 12 ? i : i - 1];
-          const text = Array.isArray(prompt)
-            ? prompt[Math.floor(Math.random() * prompt.length)]
-            : prompt;
-          cell.innerText = text;
+          let prompt = selected[i < 12 ? i : i - 1];
+          const promptText = replacePromptPlaceholders(prompt, availableDrivers, availableTeams);
+          cell.innerText = promptText;
           cell.addEventListener("click", () => {
             cell.classList.toggle("marked");
           });
@@ -185,6 +291,12 @@
         grid.appendChild(cell);
       }
     }
+
+    document.getElementById("darkToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      document.getElementById("darkToggle").innerText = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+    });
 
     window.onload = generateBingo;
   </script>
