@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>python scripts</title>
+  <style>
+    :root {
+      --bg: #162138;
+      --text: #ffffff;
+      --accent: #dad7cd;
+      --card-bg: #2a4032;
+      --link: #9fd8cb;
+    }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: var(--bg);
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .projects {
+      width: 100%;
+      max-width: 1000px;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .projects h2 {
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      width: 100%;
+    }
+    .category-title {
+      font-size: 1.3rem;
+      color: var(--accent);
+      margin: 2rem 0 1rem;
+      border-bottom: 1px solid var(--accent);
+      width: 100%;
+      text-align: left;
+    }
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+    }
+    .project-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+      text-align: center;
+    }
+    .project-card:hover {
+      transform: scale(1.03);
+    }
+    .project-card a {
+      color: inherit;
+      text-decoration: none;
+      display: block;
+      padding: 1rem;
+    }
+    .project-card h3 {
+      margin: 0.5rem 0 0;
+    }
+    .project-card p {
+      margin: 0.5rem 0 1rem;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+    .footer-links {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: var(--link);
+      text-align: center;
+    }
+    .footer-links a {
+      color: var(--link);
+      text-decoration: none;
+      margin: 0 0.3rem;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<section class="projects">
+<h2>Python Script Library</h2>
+
+<div class="category-title">Descriptive Analytics</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/basic_stats.py">
+            <h3>Basic Stats</h3>
+            <p>Comprehensive summary statistics</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/descriptive_stats.py">
+            <h3>Descriptive Stats</h3>
+            <p>Measures of central tendency and variability</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/frequency_tables_and_bar_charts.py">
+            <h3>Frequency Tables</h3>
+            <p>Tabulations and bar chart visualizations</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/discrete_distributions.py">
+            <h3>Discrete Distributions</h3>
+            <p>Rudimentary distribution creation for discrete variables</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/goodness_of_fit_fit_test.py">
+            <h3>Goodness of Fit Tests</h3>
+            <p>Statistical fit tests for distributions</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/descriptive_analytics/gof_dictionary.py">
+            <h3>GOF Dictionary</h3>
+            <p>Utility dictionary for GOF tests</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Predictive Modeling</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/classification_tree.py">
+            <h3>Classification Tree</h3>
+            <p>Decision tree classifier for categorical outcomes</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/nearest_neighbors_knn.py">
+            <h3>KNN</h3>
+            <p>K-nearest neighbors classification</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/knn.py">
+            <h3>KNN (Alt)</h3>
+            <p>K-nearest neighbors implementation variant</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/logistic_regressions.py">
+            <h3>Logistic Regression</h3>
+            <p>Binary classification using logistic models</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/neural_networks.py">
+            <h3>Neural Networks</h3>
+            <p>Basic neural network models for prediction</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/predition_with_regression_models.py">
+            <h3>Predicting with Regression Models</h3>
+            <p>Predictive modeling using OLS and other regressions</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/predictive_modeling/forests.py">
+            <h3>Random Forests</h3>
+            <p>Ensemble classification using decision trees</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Data Mining</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/data_mining/affinity_analysis.py">
+            <h3>Affinity Analysis</h3>
+            <p>Market basket and association rule mining</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_mining/social_media_analytics.py">
+            <h3>Social Media Analytics</h3>
+            <p>Mining insights from social media data</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_mining/cluster_analysis.py">
+            <h3>Cluster Analysis</h3>
+            <p>Unsupervised learning to group observations</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_mining/data_mining.py">
+            <h3>Data Mining Overview</h3>
+            <p>Overview of mining methods and pipelines</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_mining/text_mining1.py">
+            <h3>Text Mining (I)</h3>
+            <p>Basic natural language processing and analysis</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Data Preparation</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/data_preparation/imputations.py">
+            <h3>Imputations</h3>
+            <p>Handling missing values in datasets</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/mice.py">
+            <h3>MICE</h3>
+            <p>Multiple imputation by chained equations</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/normality_tests.py">
+            <h3>Normality Tests</h3>
+            <p>Tests for normal distribution assumptions</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/normality_tests_dictionary.py">
+            <h3>Normality Test Dictionary</h3>
+            <p>Dictionary for conducting normality tests</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/outlier_detection.py">
+            <h3>Outlier Detection</h3>
+            <p>Identify and flag anomalous data points</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/outlier_removal.py">
+            <h3>Outlier Removal</h3>
+            <p>Techniques to eliminate outliers</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/statistical_imputations.py">
+            <h3>Statistical Imputations</h3>
+            <p>Mean, median, and model-based imputations</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/data_preparation/transformation_to_normality.py">
+            <h3>Transforming to Normal</h3>
+            <p>Apply transformations to normalize data</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Dimension Reduction</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/dimensionality_reduction/dimension_reduction.py">
+            <h3>Dimension Reduction</h3>
+            <p>PCA and other techniques to reduce variables</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Model Evaluation</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/dimensionality_reduction/model_performance.py">
+            <h3>Model Performance</h3>
+            <p>Metrics for model accuracy and evaluation</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Modules</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/modules/DescStatsModule.py">
+            <h3>Descriptive Stats Module</h3>
+            <p>Modularized descriptive statistics tools</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/FrequencyModule.py">
+            <h3>Frequency Module</h3>
+            <p>Reusable code for frequency analysis</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/GOFModule.py">
+            <h3>GOF Module</h3>
+            <p>Encapsulated functions for GOF testing</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/master_stats_program.py">
+            <h3>Master Stats Program</h3>
+            <p>Integrated stats toolkit</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/NormalityModule.py">
+            <h3>Normality Module</h3>
+            <p>Module for normality testing</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/OLSModule.py">
+            <h3>OLS Module</h3>
+            <p>Ordinary Least Squares modeling tools</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/modules/TransformModule.py">
+            <h3>Transformation Module</h3>
+            <p>Tools for statistical transformations</p>
+          </a>
+        </div>
+</div>
+<div class="category-title">Time Series</div>
+<div class="project-grid">
+        <div class="project-card">
+          <a href="scripts/time_series/forecasting.py">
+            <h3>Forecasting</h3>
+            <p>Time series forecasting using classical methods</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/time_series/time_series_classic_method.py">
+            <h3>Time Series (Classic)</h3>
+            <p>Moving averages and exponential smoothing</p>
+          </a>
+        </div>
+        <div class="project-card">
+          <a href="scripts/time_series/time_series_stl_method.py">
+            <h3>Time Series (STL)</h3>
+            <p>Seasonal-Trend decomposition using Loess</p>
+          </a>
+        </div>
+</div>
+</section>
+<div class="footer-links">
+        <a href="about.html">about</a> // 
+        <a href="projects.html">projects</a> // 
+        <a href="blog/">blog</a> // 
+        <a href="docs/AcaciaJohnsonResume1.pdf">resume</a> // 
+        <a href="index.html">home</a> //
+</body>
+</html>
