@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>F1 Bingo</title>
+  <title>F1 Bingo Generator</title>
   <link rel="icon" href="images/table-cells-solid.png" type="image/png" />
   <style>
     :root {
@@ -87,13 +87,13 @@
       color: white;
       font-style: italic;
     }
-    
 
     .buttons {
       display: flex;
       gap: 1rem;
       justify-content: center;
       margin-bottom: 1.5rem;
+      flex-wrap: wrap;
     }
 
     .buttons button {
@@ -117,15 +117,13 @@
       border-color: #444;
     }
     body.dark .bingo-cell.marked {
-       background-color: #b00000; /* a darker red for better contrast */
+      background-color: #b00000;
       color: #fff;
       border-color: #ff4d4d;
     }
-
     body.dark .bingo-cell:hover {
       background-color: #333;
     }
-
     body.dark .free-space {
       background-color: var(--red);
     }
@@ -135,7 +133,6 @@
         background: white;
         color: black;
       }
-
       .bingo-cell {
         border: 1px solid #000;
         background: white !important;
@@ -143,15 +140,30 @@
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-
       .free-space {
         font-weight: bold;
       }
-
       #darkToggle,
       .buttons {
         display: none !important;
       }
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--black);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.0s, bottom 1.0s;
+      z-index: 1000;
     }
   </style>
 </head>
@@ -160,15 +172,18 @@
   <h1>F1 Race Bingo</h1>
 
   <div class="buttons">
-    <button onclick="generateBingo()">🔄 Generate</button>
-    <button onclick="print()">🖨️ Download PDF</button>
+    <button onclick="generateBingo()">Generate new card</button>
+    <button onclick="toggleMode()" id="modeToggle">Turn on sprint mode</button>
+    <button onclick="print()">Download PDF version</button>
   </div>
 
   <div id="bingoGrid"></div>
 
+  <div id="toast"></div>
+
   <script>
     const drivers = [
-      "Norris", "Piastri", "Verstappen", "Tsunoda", "Leclerc", "Hamilton", "Russell", 
+      "Norris", "Piastri", "Verstappen", "Tsunoda", "Leclerc", "Hamilton", "Russell",
       "Antonelli", "Stroll", "Alonso", "Albon", "Sainz", "Gasly", "Doohan", "Hulkenberg",
       "Bortoleto", "Lawson", "Hadjar", "Bearman", "Ocon"
     ];
@@ -215,20 +230,53 @@
       "2 or more rookies score points",
       "A new lap record is set",
       "3+ lap leaders",
+      "Front wing is changed",
       "A team principal looks mad on camera",
       "Both Team qualify within 0.300s",
       "2/3 of the grid starts on mediums",
       "5+ cars are lapped",
-      "Celebrity spotted in the garage",
+      "A driver is coaught speeding in the pits",
+      "Non-Motorsport celebrity spotted in the garage",
       "Commentary team argues on air",
       "Driver swears in a radio message",
       "6+ teams in the points",
       ["Polesitter does not win", "Polesitter wins"],
       ["Polesitter loses lead in first 5 laps", "Polesitter keeps lead in first 5 laps"],
       ["WDC leader changes", "WCC leader changes"],
-      ["Sprint winner does not win the race", "Sprint winner does win the race"],
       ["A driver gets fined for swearing", "Driver does not get damaged the entire weekend"]
     ];
+
+    const sprintPrompts = [
+      "Driver wins Sprint and Race",
+      "Driver crashes out in sprint",
+      ["Both Team finish the sprint", "Both Team DNF in the sprint"],
+      "Top 3 in Sprint and Race are completely different",
+      "Sprint race has a Safety Car",
+      "Sprint: Overtake of the Sprint mentioned",
+      "Grid penalty applied after Sprint",
+      "Rookie finishes top 5 in the Sprint",
+      "Sprint polesitter loses lead",
+      ["Sprint winner does not win Race", "Sprint winner also wins Race"],
+      "2+ penalites given out in Sprint",
+      "Sprint pole sitter finishes outside top 3",
+      "Two teammates collide during sprint",
+      "More than one DNF in sprint",
+      "Midfield team wins sprint",
+      "Front row sprint starter loses 3+ positions",
+      "Sprint has a standing restart",
+      "Track limits penalty in sprint",
+      "Midflied team sprint podium finish",
+      "Driver sets fastest lap in sprint but doesn’t win",
+      ["Pitstop during sprint", "Pit stop under Safety Car in sprint"],
+      "Five or more drivers receive warnings during sprint",
+      "Unexpected weather impacts sprint",
+      "Safety Car on Lap 1 of sprint",
+      ["Sprint winner wins by under 2 seconds", "Sprint winner wins by over 10 seconds"],
+      "Driver goes from outside top 10 to points in sprint",
+      "Red flag restarts sprint with less than 10 laps to go"
+    ];
+
+    let includeSprint = false;
 
     function shuffle(array) {
       return array.sort(() => Math.random() - 0.5);
@@ -268,7 +316,8 @@
       const grid = document.getElementById("bingoGrid");
       grid.innerHTML = "";
 
-      const shuffledPrompts = shuffle([...prompts]);
+      const combinedPrompts = includeSprint ? prompts.concat(sprintPrompts) : prompts;
+      const shuffledPrompts = shuffle([...combinedPrompts]);
       const selected = shuffledPrompts.slice(0, 24);
 
       let availableDrivers = [...drivers];
@@ -294,10 +343,29 @@
       }
     }
 
+    function toggleMode() {
+      includeSprint = !includeSprint;
+      document.getElementById("modeToggle").innerText = includeSprint ? "Turn off sprint mode" : "Turn on sprint mode";
+      generateBingo();
+      showToast(includeSprint ? "Sprint mode activated!" : "Sprint mode deactivated.");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.style.opacity = '1';
+      toast.style.bottom = '3rem';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.bottom = '2rem';
+      }, 2000);
+    }
+
     document.getElementById("darkToggle").addEventListener("click", () => {
       document.body.classList.toggle("dark");
       const isDark = document.body.classList.contains("dark");
-      document.getElementById("darkToggle").innerText = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+      document.getElementById("darkToggle").innerText = isDark ? "Light Theme" : "Dark Theme";
     });
 
     window.onload = generateBingo;
