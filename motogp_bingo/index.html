@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The 2025 MotoGP Bingo Generator</title>
+  <link rel="icon" href="images/table-cells-solid.png" type="image/png" />
+  <style>
+    :root {
+      --red: #e10600;
+      --black: #121212;
+      --gray: #c5c5c5;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--gray);
+      margin: 0;
+      padding: 2rem;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #181818;
+      color: var(--white);
+    }
+
+    h1 {
+      color: var(--red);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    #darkToggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      background-color: var(--black);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    #bingoGrid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .bingo-cell {
+      background-color: white;
+      border: 2px solid var(--black);
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .bingo-cell:hover {
+      background-color: #ffe5e5;
+    }
+
+    .marked {
+      background-color: var(--red);
+      color: white;
+      border-color: #900;
+    }
+
+    .free-space {
+      background-color: var(--black);
+      color: white;
+      font-style: italic;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .buttons button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: var(--black);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .buttons button:hover {
+      background-color: var(--red);
+    }
+
+    body.dark .bingo-cell {
+      background-color: #222;
+      color: var(--white);
+      border-color: #444;
+    }
+    body.dark .bingo-cell.marked {
+      background-color: #b00000;
+      color: #fff;
+      border-color: #ff4d4d;
+    }
+    body.dark .bingo-cell:hover {
+      background-color: #333;
+    }
+    body.dark .free-space {
+      background-color: var(--red);
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+      .bingo-cell {
+        border: 1px solid #000;
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .free-space {
+        font-weight: bold;
+      }
+      #darkToggle,
+      .buttons {
+        display: none !important;
+      }
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--black);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.0s, bottom 1.0s;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <button id="darkToggle">Dark Mode</button>
+  <h1>2025 MotoGP Bingo</h1>
+
+  <div class="buttons">
+    <button onclick="generateBingo()">Generate new card</button>
+    <button onclick="print()">Download PDF version</button>
+  </div>
+
+  <div id="bingoGrid"></div>
+
+  <div id="toast"></div>
+
+  <script>
+    const riders = [
+      "Bagnaia", "M.Marquez", "Binder", "Acosta", "Savadori ", "Bezzecchi", "Quartararo", // no Martin due to injury
+      "Rins", "Marini", "Mir", "Oliveira", "Miller", "Zarco", "Chantra", "A.Marquez",
+      "Aldeguer", "Di Giannantonio", "Morbidelli", "Fernandez", "Ogura", "Vinales", "Bastianini"
+    ];
+
+    const teams = [
+      "Ducati Corse", "KTM", "Aprilia", "Yamaha", "Honda", "Trackhouse",
+      "Priman Yamaha", "LCR Honda", "Gresini Ducati", "VR46 Ducati", "Haas", "Tech3 KTM"
+    ];
+
+    const prompts = [
+      ["Rider makes Q2", "Rider does not make Q2"],
+      ["Red flag in qualifying", "Red flag in race"],
+      "Rider fails to set a time in Q2",
+      "Crash at Turn 1 on Lap 1",
+      ["Rider causes collision and receives long lap penalty", "3+ riders crash in the same lap"],
+      "Double long lap penalty given out",
+      "M.Marquez leads every lap",
+      "Fastest lap set on last lap",
+      "Commentators argue over incident replay",
+      "Valentino Rossi mentioned during broadcast",
+      "Smoke from rear of the bike",
+      "A.Marquez finishes 2nd",
+      "Rider crashes out in sprint",
+      ["Both Team finish the sprint", "Both Team DNF in the sprint"],
+      "Top 3 in Sprint and Race are completely different",
+      "Rookie finishes top 6 in the Sprint",
+      "Sprint polesitter loses lead",
+      ["Sprint winner does not win Race", "Sprint winner also wins Race"],
+      "Sprint pole sitter finishes outside top 3",
+      "Two teammates collide during sprint",
+      "More than one DNF in sprint",
+      "3+ DNFs in race",
+      "All Ducati bike podium",
+      "A new lap record is set",
+      "3+ lap leaders",
+      "Rider gets podium in both sprint and race",
+      "Bike swap occurs",
+      "Rain affects at least one session",
+      "Non-Motorsport celebrity spotted in the garage",
+      "A session ends early",
+      ["Rider on podium", "Rider is not on the podium"],
+      "Both Team on podium",
+      "Rider in points",
+      "A Team finishes last",
+      ["Team has fastest lap", "Rider on pole"],
+      "Team scores double points",
+      ["Rider loses places on opening lap", "Rider gains places on opening lap"],
+      ["Rider qualifies top 5", "Rider qualifies 15th or higher"],
+      ["Top 3 separated by less than 0.2s in qualifying", "Rider gets pole position by under 0.050s"],
+    ];
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function getRandom(array) {
+      return array[Math.floor(Math.random() * array.length)];
+    }
+
+    function getRandomAndRemove(array) {
+      if (array.length === 0) return null;
+      const index = Math.floor(Math.random() * array.length);
+      return array.splice(index, 1)[0];
+    }
+
+    function replaceAll(str, search, replacements) {
+      let i = 0;
+      return str.replace(new RegExp(search, "g"), () => replacements[i++] || search);
+    }
+
+    function replacePromptPlaceholders(prompt, availableRiders, availableTeams) {
+      let newPrompt = Array.isArray(prompt) ? getRandom(prompt) : prompt;
+
+      const riderCount = (newPrompt.match(/Rider/g) || []).length;
+      const teamCount = (newPrompt.match(/Team/g) || []).length;
+
+      const dReps = Array.from({length: riderCount}, () => getRandomAndRemove(availableRiders) || getRandom(riders));
+      const tReps = Array.from({length: teamCount}, () => getRandomAndRemove(availableTeams) || getRandom(teams));
+
+      newPrompt = replaceAll(newPrompt, "Rider", dReps);
+      newPrompt = replaceAll(newPrompt, "Team", tReps);
+
+      return newPrompt;
+    }
+
+      function generateBingo() {
+      const grid = document.getElementById("bingoGrid");
+      grid.innerHTML = "";
+
+      const shuffled = shuffle([...prompts]);
+      const selected = shuffled.slice(0, 24); // Corrected
+
+      let availableRiders = [...riders];
+      let availableTeams = [...teams];
+
+      for (let i = 0; i < 25; i++) {
+        const cell = document.createElement("div");
+        cell.className = "bingo-cell";
+
+        if (i === 12) {
+          cell.innerText = "It's lights out, and away we go!";
+          cell.classList.add("free-space", "marked");
+        } else {
+          let prompt = selected[i < 12 ? i : i - 1];
+          const promptText = replacePromptPlaceholders(prompt, availableRiders, availableTeams);
+          cell.innerText = promptText;
+          cell.addEventListener("click", () => {
+            cell.classList.toggle("marked");
+          });
+        }
+
+        grid.appendChild(cell);
+      }
+    }
+
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.style.opacity = '1';
+      toast.style.bottom = '3rem';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.bottom = '2rem';
+      }, 2000);
+    }
+
+    document.getElementById("darkToggle").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      document.getElementById("darkToggle").innerText = isDark ? "Light Theme" : "Dark Theme";
+    });
+
+    window.onload = generateBingo;
+  </script>
+</body>
+</html>
